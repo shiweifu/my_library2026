@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title description">
+  <title id="title">花样年华示意封面</title>
+  <desc id="description">深红色织物纹样上的花样年华标题</desc>
+  <defs>
+    <pattern id="p" width="84" height="84" patternUnits="userSpaceOnUse">
+      <path d="M42 6c10 18 23 25 36 36-13 11-26 18-36 36C32 60 19 53 6 42 19 31 32 24 42 6Z" fill="none" stroke="#dca99c" stroke-width="3" opacity=".45"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="900" fill="#791f26"/>
+  <rect width="600" height="900" fill="url(#p)"/>
+  <rect x="78" y="110" width="444" height="680" fill="none" stroke="#f1d8c8" stroke-width="2"/>
+  <text x="300" y="360" text-anchor="middle" fill="#fff1df" font-size="74" font-family="serif" writing-mode="tb">花样年华</text>
+  <text x="300" y="735" text-anchor="middle" fill="#f1d8c8" font-size="22" letter-spacing="8">2000</text>
+</svg>

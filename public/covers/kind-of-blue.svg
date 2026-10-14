@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-labelledby="title description">
+  <title id="title">Kind of Blue 示意封面</title>
+  <desc id="description">深蓝色抽象唱片封面</desc>
+  <rect width="600" height="600" fill="#132b45"/>
+  <circle cx="300" cy="300" r="205" fill="none" stroke="#587794" stroke-width="2"/>
+  <circle cx="300" cy="300" r="152" fill="none" stroke="#587794" stroke-width="2"/>
+  <path d="M106 382c80-175 185-238 388-144M113 430c132-110 238-139 378-88" fill="none" stroke="#d8e2ea" stroke-width="7" opacity=".72"/>
+  <text x="58" y="82" fill="#f0f5f8" font-size="52" font-family="serif">Kind of Blue</text>
+  <text x="61" y="119" fill="#9ab2c5" font-size="22" font-family="sans-serif" letter-spacing="3">MILES DAVIS</text>
+</svg>

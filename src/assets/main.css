@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  background: #f7f8fa;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #f7f8fa;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  background: #f7f8fa;
+  color: #17233a;
+  padding: 0.65rem 1rem;
+  border: 2px solid #17233a;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@layer components {
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-stamp focus-visible:ring-offset-4 focus-visible:ring-offset-paper;
+  }
+
+  .text-link {
+    @apply underline decoration-archive/30 underline-offset-4 transition-colors hover:text-stamp hover:decoration-stamp focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stamp focus-visible:ring-offset-2;
+  }
+
+  .nav-link {
+    @apply border-b-2 border-transparent transition-colors hover:text-archive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stamp focus-visible:ring-inset;
+  }
+
+  .nav-link.router-link-active {
+    @apply border-stamp text-archive;
+  }
+
+  .cover-shell {
+    @apply relative w-full overflow-hidden border border-archive/15 bg-mist;
+  }
+
+  .record-row {
+    @apply grid grid-cols-[6.6rem_1fr] gap-5 py-8 sm:grid-cols-[8.5rem_1fr] sm:gap-8 sm:py-10;
+  }
+
+  .record-cover-link {
+    @apply self-start transition-transform duration-200 group-hover:-translate-y-1;
+  }
+
+  .title-link {
+    background-image: linear-gradient(#b84235, #b84235);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    transition: background-size 180ms ease;
+  }
+
+  .record-row:hover .title-link {
+    background-size: 100% 1px;
+  }
+
+  .year-rail {
+    @apply sticky top-0 z-10 -mx-5 flex overflow-x-auto border-y border-archive/15 bg-paper/95 px-5 backdrop-blur lg:top-8 lg:mx-0 lg:block lg:border-y-0 lg:border-l lg:bg-transparent lg:px-0;
+  }
+
+  .year-link {
+    @apply relative flex shrink-0 items-center border-b-2 border-transparent px-4 py-4 font-serif text-xl text-archive/40 lg:border-b-0 lg:px-5 lg:py-3 lg:text-2xl;
+  }
+
+  .year-link-active {
+    @apply border-stamp font-semibold text-archive lg:border-l-4 lg:-ml-px;
+  }
+
+  .filter-button {
+    @apply shrink-0 border border-transparent px-3 py-1.5 text-sm text-archive/55 transition-colors hover:text-archive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stamp;
+  }
+
+  .filter-button-active {
+    @apply border-archive/30 text-archive;
+  }
+
+  .prose-archive {
+    @apply max-w-[46rem] font-serif text-[1.05rem] leading-9 text-graphite/90;
+  }
+
+  .prose-archive > * + * {
+    margin-top: 1.4em;
+  }
+
+  .prose-archive h2,
+  .prose-archive h3 {
+    @apply mt-10 font-semibold text-archive;
+  }
+
+  .prose-archive h2 {
+    @apply text-2xl;
+  }
+
+  .prose-archive h3 {
+    @apply text-xl;
+  }
+
+  .prose-archive blockquote {
+    @apply border-l-2 border-stamp pl-5 text-archive/75;
+  }
+
+  .prose-archive ul,
+  .prose-archive ol {
+    @apply ml-6;
+  }
+
+  .prose-archive ul {
+    @apply list-disc;
+  }
+
+  .prose-archive ol {
+    @apply list-decimal;
+  }
+
+  .prose-archive a {
+    @apply text-link;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
