@@ -3,7 +3,12 @@ import { ref, watch } from 'vue'
 import { BookOpenIcon, FilmIcon, MusicalNoteIcon } from '@heroicons/vue/24/outline'
 import type { MediaType } from '@/types/content'
 
-const props = defineProps<{ src?: string; alt: string; type: MediaType; eager?: boolean }>()
+const props = defineProps<{
+  src?: string
+  alt: string
+  type: MediaType
+  eager?: boolean
+}>()
 const failed = ref(false)
 watch(
   () => props.src,
@@ -21,6 +26,7 @@ const icons = { book: BookOpenIcon, movie: FilmIcon, music: MusicalNoteIcon }
       :src="src"
       :alt="alt"
       :loading="eager ? 'eager' : 'lazy'"
+      referrerpolicy="no-referrer"
       class="h-full w-full object-cover"
       @error="failed = true"
     />

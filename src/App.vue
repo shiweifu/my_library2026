@@ -13,9 +13,16 @@ import SiteHeader from '@/components/SiteHeader.vue'
         class="mx-auto flex max-w-7xl flex-col gap-2 text-sm text-archive/65 sm:flex-row sm:items-center sm:justify-between"
       >
         <p>把看过的世界，按年份归档。</p>
-        <a class="text-link" href="https://openlibrary.org" target="_blank" rel="noreferrer"
-          >部分书籍资料来自 Open Library</a
-        >
+        <p>
+          条目资料可来自
+          <a class="text-link" href="https://www.douban.com" target="_blank" rel="noreferrer"
+            >豆瓣</a
+          >
+          与
+          <a class="text-link" href="https://openlibrary.org" target="_blank" rel="noreferrer"
+            >Open Library</a
+          >
+        </p>
       </div>
     </footer>
   </div>

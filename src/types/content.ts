@@ -15,9 +15,9 @@ interface BaseRecord {
   doubanUrl?: string
   doubanRatingAsOf?: string
   sourceUrl?: string
+  description?: string
   body: string
   bodyHtml: string
-  summary: string
 }
 
 export interface BookRecord extends BaseRecord {

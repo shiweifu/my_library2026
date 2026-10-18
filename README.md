@@ -13,20 +13,23 @@ pnpm dev
 
 ## 新增记录
 
-书籍可以通过 ISBN 半自动补全：
+书籍可以通过豆瓣链接或 ISBN 自动补全标题、作者、封面、豆瓣评分、简介、出版社、出版年份和标签：
 
 ```bash
+pnpm record:add book https://book.douban.com/subject/1200840/
 pnpm record:add book 9780140328721
 ```
 
-电影和音乐会创建手工填写模板：
+电影和音乐可以通过对应的豆瓣条目链接补全标题、封面、豆瓣评分、简介、创作者、发行年份和标签：
 
 ```bash
-pnpm record:add movie
-pnpm record:add music
+pnpm record:add movie https://movie.douban.com/subject/1291557/
+pnpm record:add music https://music.douban.com/subject/1397546/
 ```
 
-脚本会创建 Markdown 文件。打开文件补充正文感受，随后验证并提交：
+不带链接运行 `movie` 或 `music` 时，仍可创建手工填写的记录。ISBN 录入会同时尝试豆瓣 ISBN 页面和 Open Library；任一来源暂时不可访问时，脚本会使用另一来源，并保留交互式补充步骤。
+
+脚本会创建 Markdown 文件。简介保存在 frontmatter 的 `description` 字段；文件正文是可选的个人书评、影评或乐评，只会在详情页展示。补充完成后验证并提交：
 
 ```bash
 pnpm content:validate
@@ -35,11 +38,11 @@ git commit -m "add new archive record"
 git push
 ```
 
-豆瓣评分采用手工记录，并用 `doubanRatingAsOf` 标记采集日期。脚本不会抓取豆瓣，也不会在浏览器中保存任何密钥。
+自动取得的豆瓣评分会用 `doubanRatingAsOf` 标记采集日期。豆瓣可能对自动访问触发验证；此时脚本会说明失败原因并继续创建可编辑记录，不会保存 Cookie 或密钥。
 
 ## 内容格式
 
-通用字段为 `type`、`title`、`completedAt`、`tags`、`cover`、`myRating`、`doubanRating`、`doubanUrl` 与 `doubanRatingAsOf`。正文是可选的 Markdown 评论。
+通用字段为 `type`、`title`、`completedAt`、`tags`、`cover`、`description`、`myRating`、`doubanRating`、`doubanUrl` 与 `doubanRatingAsOf`。正文是可选的 Markdown 评论，只在详情页展示。
 
 - 书籍：`isbn`、`authors`、`publisher`、`publishedYear`
 - 电影：`directors`、`releaseYear`

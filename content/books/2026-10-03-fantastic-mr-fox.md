@@ -16,6 +16,7 @@ authors:
 publisher: Puffin Books
 publishedYear: 1988
 sourceUrl: https://openlibrary.org/isbn/9780140328721
+description: 狐狸爸爸每晚从三个农场主那里偷食物。愤怒的农场主决定围捕他，却把这场追逐变成了狐狸一家和地下动物们共同面对的生存冒险。
 ---
 
 狐狸先生赢的并不只是那场地道里的追逐。他把一家人的困境，变成了所有小动物可以一起生活的办法。

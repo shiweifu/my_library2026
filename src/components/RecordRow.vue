@@ -34,10 +34,10 @@ defineProps<{ record: CulturalRecord; eager?: boolean }>()
       </h3>
       <p class="mt-2 text-sm text-archive/65">{{ creatorsOf(record).join('、') }}</p>
       <p
-        v-if="record.summary"
-        class="mt-4 max-w-2xl font-serif text-sm leading-7 text-graphite/75 sm:text-base"
+        v-if="record.description"
+        class="mt-4 max-w-2xl text-sm leading-7 text-graphite/75 sm:text-base"
       >
-        {{ record.summary }}<span v-if="record.body.length > record.summary.length">…</span>
+        {{ record.description }}
       </p>
       <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
         <RatingPair :my-rating="record.myRating" :douban-rating="record.doubanRating" compact />

@@ -11,9 +11,9 @@ const record = (year: number, id: string): CulturalRecord => ({
   month: 1,
   tags: [],
   directors: ['导演'],
+  description: '',
   body: '',
   bodyHtml: '',
-  summary: '',
 })
 
 describe('record grouping', () => {

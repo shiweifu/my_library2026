@@ -14,6 +14,8 @@ interface OpenLibraryBook {
   cover?: { small?: string; medium?: string; large?: string }
   identifiers?: { openlibrary?: string[] }
   url?: string
+  excerpts?: Array<{ text?: string }>
+  notes?: string | { value?: string }
 }
 
 export interface BookMetadata {
@@ -23,6 +25,7 @@ export interface BookMetadata {
   publishedYear?: number
   cover?: string
   sourceUrl?: string
+  description?: string
 }
 
 export function mapOpenLibraryBook(book: OpenLibraryBook | undefined): BookMetadata {
@@ -34,6 +37,7 @@ export function mapOpenLibraryBook(book: OpenLibraryBook | undefined): BookMetad
     ? `https://covers.openlibrary.org/b/olid/${openLibraryId}-L.jpg?default=false`
     : cover?.replace(/^http:/, 'https:')
   const yearMatch = book.publish_date?.match(/\b(1[5-9]\d{2}|20\d{2}|21\d{2})\b/)
+  const notes = typeof book.notes === 'string' ? book.notes : book.notes?.value
 
   return {
     title: book.title?.trim(),
@@ -42,6 +46,7 @@ export function mapOpenLibraryBook(book: OpenLibraryBook | undefined): BookMetad
     publishedYear: yearMatch ? Number(yearMatch[1]) : undefined,
     cover: coverById,
     sourceUrl: book.url,
+    description: book.excerpts?.find((excerpt) => excerpt.text)?.text?.trim() ?? notes?.trim(),
   }
 }
 

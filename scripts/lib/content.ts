@@ -72,15 +72,6 @@ function validateRating(
   }
 }
 
-function summaryFromMarkdown(body: string): string {
-  return body
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/[#>*_`[\]()-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 88)
-}
-
 export function parseRecord(source: string, file: string): CulturalRecord {
   const parsed = matter(source)
   const data = parsed.data as Record<string, unknown>
@@ -120,9 +111,12 @@ export function parseRecord(source: string, file: string): CulturalRecord {
     doubanUrl: typeof data.doubanUrl === 'string' ? data.doubanUrl : undefined,
     doubanRatingAsOf: dateString(data.doubanRatingAsOf),
     sourceUrl: typeof data.sourceUrl === 'string' ? data.sourceUrl : undefined,
+    description:
+      typeof data.description === 'string' && data.description.trim()
+        ? data.description.trim()
+        : undefined,
     body: parsed.content.trim(),
     bodyHtml: markdown.render(parsed.content.trim()),
-    summary: summaryFromMarkdown(parsed.content),
   }
 
   let record: CulturalRecord

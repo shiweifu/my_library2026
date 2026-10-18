@@ -11,6 +11,7 @@ describe('Open Library mapping', () => {
         publish_date: '12 October 2021',
         identifiers: { openlibrary: ['OL123M'] },
         url: 'https://openlibrary.org/books/OL123M',
+        excerpts: [{ text: '一本测试书的简介。' }],
       }),
     ).toEqual({
       title: '测试书',
@@ -19,6 +20,7 @@ describe('Open Library mapping', () => {
       publishedYear: 2021,
       cover: 'https://covers.openlibrary.org/b/olid/OL123M-L.jpg?default=false',
       sourceUrl: 'https://openlibrary.org/books/OL123M',
+      description: '一本测试书的简介。',
     })
   })
 })

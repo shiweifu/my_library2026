@@ -8,6 +8,7 @@ import { creatorsOf, mediaLabels } from '@/types/content'
 const props = defineProps<{ id: string }>()
 const store = useArchiveStore()
 const record = computed(() => store.findRecord(props.id))
+const reviewLabels = { book: '书评', movie: '影评', music: '乐评' } as const
 </script>
 
 <template>
@@ -61,7 +62,19 @@ const record = computed(() => store.findRecord(props.id))
           </p>
         </div>
 
-        <div v-if="record.body" class="prose-archive mt-10" v-html="record.bodyHtml" />
+        <section v-if="record.description" class="mt-10 border-b border-archive/15 pb-10">
+          <h2 class="font-serif text-2xl font-semibold text-archive">简介</h2>
+          <p class="mt-4 max-w-3xl text-base leading-8 text-graphite/80">
+            {{ record.description }}
+          </p>
+        </section>
+
+        <section v-if="record.body" class="mt-10">
+          <h2 class="font-serif text-2xl font-semibold text-archive">
+            {{ reviewLabels[record.type] }}
+          </h2>
+          <div class="prose-archive mt-5" v-html="record.bodyHtml" />
+        </section>
 
         <div class="mt-12 flex flex-wrap gap-2">
           <RouterLink
