@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "content:validate": "node --import tsx scripts/validate-content.ts",
-    "record:add": "node --import tsx scripts/add-record.ts"
+    "record:add": "node --import tsx scripts/add-record.ts",
+    "record:delete": "node --import tsx scripts/delete-record.ts"
   },
   "dependencies": {
     "@fontsource/noto-sans-sc": "^5.2.8",

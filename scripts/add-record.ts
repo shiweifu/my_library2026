@@ -12,12 +12,16 @@ import {
 } from './lib/douban'
 import { isValidIsbn, normalizeIsbn } from './lib/isbn'
 import { fetchBookByIsbn, type BookMetadata } from './lib/open-library'
+import { parseRecordInput } from './lib/record-input'
 
-const type = process.argv[2] as MediaType | undefined
-if (!type || !['book', 'movie', 'music'].includes(type)) {
-  console.error('用法：pnpm record:add <book|movie|music> [豆瓣链接|ISBN]')
+let inputOptions: ReturnType<typeof parseRecordInput>
+try {
+  inputOptions = parseRecordInput(process.argv[2], process.argv[3])
+} catch (error) {
+  console.error(error instanceof Error ? error.message : error)
   process.exit(1)
 }
+const { type, source: sourceArgument } = inputOptions
 
 const today = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Shanghai',
@@ -96,7 +100,7 @@ interface BookImport {
 }
 
 async function getBookMetadata(): Promise<BookImport> {
-  const raw = process.argv[3] ?? (await ask('豆瓣链接或 ISBN'))
+  const raw = sourceArgument ?? (await ask('豆瓣链接或 ISBN'))
   const isUrl = /^https?:\/\//i.test(raw)
   let douban: DoubanMetadata | undefined
   let doubanUrl: string | undefined
@@ -131,7 +135,7 @@ async function getBookMetadata(): Promise<BookImport> {
 }
 
 async function getDoubanImport(mediaType: 'movie' | 'music') {
-  const raw = process.argv[3] ?? (await ask('豆瓣链接（可留空）'))
+  const raw = sourceArgument ?? (await ask('豆瓣链接（可留空）'))
   if (!raw) return { douban: undefined, doubanUrl: undefined }
   if (doubanTypeFromUrl(raw) !== mediaType) {
     throw new Error(`新增${mediaType === 'movie' ? '电影' : '音乐'}时，请使用对应的豆瓣条目链接`)

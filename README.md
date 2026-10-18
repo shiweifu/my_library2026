@@ -16,18 +16,18 @@ pnpm dev
 书籍可以通过豆瓣链接或 ISBN 自动补全标题、作者、封面、豆瓣评分、简介、出版社、出版年份和标签：
 
 ```bash
-pnpm record:add book https://book.douban.com/subject/1200840/
-pnpm record:add book 9780140328721
+pnpm record:add https://book.douban.com/subject/1200840/
+pnpm record:add 9780140328721
 ```
 
 电影和音乐可以通过对应的豆瓣条目链接补全标题、封面、豆瓣评分、简介、创作者、发行年份和标签：
 
 ```bash
-pnpm record:add movie https://movie.douban.com/subject/1291557/
-pnpm record:add music https://music.douban.com/subject/1397546/
+pnpm record:add https://movie.douban.com/subject/1291557/
+pnpm record:add https://music.douban.com/subject/1397546/
 ```
 
-不带链接运行 `movie` 或 `music` 时，仍可创建手工填写的记录。ISBN 录入会同时尝试豆瓣 ISBN 页面和 Open Library；任一来源暂时不可访问时，脚本会使用另一来源，并保留交互式补充步骤。
+脚本会根据豆瓣链接的域名自动判断书籍、电影或音乐类型，不需要提前指定。原来的 `pnpm record:add book <ISBN>` 以及不带链接运行 `movie`、`music` 的手工填写方式仍然兼容。ISBN 录入会同时尝试豆瓣 ISBN 页面和 Open Library；任一来源暂时不可访问时，脚本会使用另一来源，并保留交互式补充步骤。
 
 脚本会创建 Markdown 文件。简介保存在 frontmatter 的 `description` 字段；文件正文是可选的个人书评、影评或乐评，只会在详情页展示。补充完成后验证并提交：
 
@@ -39,6 +39,24 @@ git push
 ```
 
 自动取得的豆瓣评分会用 `doubanRatingAsOf` 标记采集日期。豆瓣可能对自动访问触发验证；此时脚本会说明失败原因并继续创建可编辑记录，不会保存 Cookie 或密钥。
+
+## 删除记录
+
+可以使用标题、记录 ID、Markdown 文件名或豆瓣链接删除条目：
+
+```bash
+pnpm record:delete 了不起的狐狸爸爸
+pnpm record:delete book-2026-10-03-fantastic-mr-fox
+pnpm record:delete https://book.douban.com/subject/1200840/
+```
+
+命令会先显示即将删除的条目，并要求输入“删除”确认。脚本调用时可以增加 `--yes` 跳过确认：
+
+```bash
+pnpm record:delete book-2026-10-03-fantastic-mr-fox --yes
+```
+
+删除的是对应的 Markdown 文件；如果尚未提交，可以使用命令输出的 `git restore -- <文件>` 恢复。
 
 ## 内容格式
 
