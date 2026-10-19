@@ -10,7 +10,9 @@ import {
   fetchDoubanMetadata,
   type DoubanMetadata,
 } from './lib/douban'
+import { fetchDoubanMetadataInBrowser } from './lib/douban-browser'
 import { isValidIsbn, normalizeIsbn } from './lib/isbn'
+import { downloadLocalCover } from './lib/local-cover'
 import { fetchBookByIsbn, type BookMetadata } from './lib/open-library'
 import { parseRecordInput } from './lib/record-input'
 
@@ -67,16 +69,69 @@ async function queryDouban(
   url: string,
   expectedType: MediaType,
 ): Promise<DoubanMetadata | undefined> {
-  output.write('正在读取豆瓣条目…\n')
+  output.write('正在通过浏览器读取豆瓣条目…\n')
+  try {
+    const metadata = await fetchDoubanMetadataInBrowser({
+      url,
+      expectedType,
+      waitForVerification: async () => {
+        await ask('浏览器中出现了豆瓣验证页，请完成验证后按回车继续')
+      },
+    })
+    output.write(`已读取豆瓣条目：${metadata.title ?? metadata.url}\n`)
+    return await localizeMetadataCover(metadata, url)
+  } catch (error) {
+    output.write(
+      `浏览器读取失败，尝试普通网络请求：${error instanceof Error ? error.message : error}\n`,
+    )
+  }
+
   try {
     const metadata = await fetchDoubanMetadata(url, expectedType)
-    output.write(`已读取豆瓣条目：${metadata.title ?? metadata.url}\n`)
-    return metadata
+    output.write(`已通过普通请求读取豆瓣条目：${metadata.title ?? metadata.url}\n`)
+    return await localizeMetadataCover(metadata, url)
   } catch (error) {
     output.write(
       `豆瓣读取失败，将保留链接并继续手动补充：${error instanceof Error ? error.message : error}\n`,
     )
     return undefined
+  }
+}
+
+async function localizeMetadataCover(
+  metadata: DoubanMetadata,
+  source: string,
+): Promise<DoubanMetadata> {
+  if (!metadata.cover || !/^https?:\/\//i.test(metadata.cover)) return metadata
+  try {
+    const cover = await downloadLocalCover({
+      imageUrl: metadata.cover,
+      source: metadata.url || source,
+    })
+    output.write(`封面已保存到 public/${cover}\n`)
+    return { ...metadata, cover }
+  } catch (error) {
+    output.write(
+      `封面下载失败，暂时保留远程地址：${error instanceof Error ? error.message : error}\n`,
+    )
+    return metadata
+  }
+}
+
+async function localizeImportedCover(
+  cover: string | undefined,
+  source: string,
+): Promise<string | undefined> {
+  if (!cover || !/^https?:\/\//i.test(cover)) return cover
+  try {
+    const localCover = await downloadLocalCover({ imageUrl: cover, source })
+    output.write(`封面已保存到 public/${localCover}\n`)
+    return localCover
+  } catch (error) {
+    output.write(
+      `封面下载失败，暂时保留远程地址：${error instanceof Error ? error.message : error}\n`,
+    )
+    return cover
   }
 }
 
@@ -156,6 +211,10 @@ try {
   if (type === 'book') {
     const { isbn, douban, openLibrary, doubanUrl } = await getBookMetadata()
     const title = await ask('书名', douban?.title ?? openLibrary?.title ?? '')
+    const cover = await localizeImportedCover(
+      douban?.cover ?? openLibrary?.cover,
+      douban?.url ?? doubanUrl ?? `https://book.douban.com/isbn/${isbn}/`,
+    )
     suggestedTitle = title
     importedDoubanRating = douban?.rating
     importedDoubanUrl = douban?.url ?? doubanUrl
@@ -164,7 +223,7 @@ try {
       type,
       title,
       completedAt,
-      cover: douban?.cover ?? openLibrary?.cover,
+      cover,
       tags: list(await ask('标签（逗号分隔）', douban?.genres.join(', ') ?? '')),
       isbn,
       authors: list(

@@ -29,6 +29,14 @@ pnpm record:add https://music.douban.com/subject/1397546/
 
 脚本会根据豆瓣链接的域名自动判断书籍、电影或音乐类型，不需要提前指定。原来的 `pnpm record:add book <ISBN>` 以及不带链接运行 `movie`、`music` 的手工填写方式仍然兼容。ISBN 录入会同时尝试豆瓣 ISBN 页面和 Open Library；任一来源暂时不可访问时，脚本会使用另一来源，并保留交互式补充步骤。
 
+豆瓣读取默认使用本机已有的 Chromium/Chrome 打开可见浏览器。如果豆瓣显示验证页，请在窗口中完成验证，再回到终端按回车；浏览器资料保存在项目的 `.cache/douban-browser/`，方便下次沿用验证状态，但不会提交到 Git。系统未自动找到浏览器时，可以指定路径：
+
+```bash
+DOUBAN_BROWSER_PATH=/path/to/chrome pnpm record:add https://movie.douban.com/subject/1291557/
+```
+
+在没有图形桌面的环境中可以设置 `DOUBAN_BROWSER_HEADLESS=1`，但遇到需要人工验证的页面时仍需改用可见浏览器。
+
 脚本会创建 Markdown 文件。简介保存在 frontmatter 的 `description` 字段；文件正文是可选的个人书评、影评或乐评，只会在详情页展示。补充完成后验证并提交：
 
 ```bash
@@ -38,7 +46,7 @@ git commit -m "add new archive record"
 git push
 ```
 
-自动取得的豆瓣评分会用 `doubanRatingAsOf` 标记采集日期。豆瓣可能对自动访问触发验证；此时脚本会说明失败原因并继续创建可编辑记录，不会保存 Cookie 或密钥。
+自动取得的豆瓣评分会用 `doubanRatingAsOf` 标记采集日期。抓取到的封面会下载到 `public/covers/`，Markdown 中保存相对路径；简介直接保存在条目中。浏览器无法启动或豆瓣暂时不可访问时，脚本会尝试普通网络请求，最后仍会保留可编辑的手工录入流程。
 
 ## 删除记录
 
